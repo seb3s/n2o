@@ -16,14 +16,14 @@
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
-          <a id="forkme_banner" href="https://github.com/5HT/n2o">View on GitHub</a>
+          <a id="forkme_banner" href="https://github.com/synrc/n2o">View on GitHub</a>
 
           <h1 id="project_title">N2O</h1>
           <h2 id="project_tagline">WebSocket Application Server</h2>
 
             <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/5HT/n2o/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/5HT/n2o/tarball/master">Download this project as a tar.gz file</a>
+              <a class="zip_download_link" href="https://github.com/synrc/n2o/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/synrc/n2o/tarball/master">Download this project as a tar.gz file</a>
             </section>
         </header>
     </div>
@@ -32,12 +32,12 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a name="n2o-erlang-web-framework" class="anchor" href="#n2o-erlang-web-framework"><span class="octicon octicon-link"></span></a>N2O: Erlang Web Framework</h1>
+<a id="n2o-erlang-web-framework" class="anchor" href="#n2o-erlang-web-framework" aria-hidden="true"><span class="octicon octicon-link"></span></a>N2O: Erlang Web Framework</h1>
 
-<p><a href="https://travis-ci.org/5HT/n2o"><img src="https://travis-ci.org/5HT/n2o.svg?branch=master" alt="Build Status"></a></p>
+<p><a href="https://travis-ci.org/synrc/n2o"><img src="https://travis-ci.org/synrc/n2o.svg?branch=master" alt="Build Status"></a></p>
 
 <h2>
-<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
 
 <ul>
 <li>Formatters: <strong>BERT</strong>, JSON, Binary or Custom</li>
@@ -54,35 +54,34 @@
 </ul>
 
 <h2>
-<a name="all-features-in-one-snippet" class="anchor" href="#all-features-in-one-snippet"><span class="octicon octicon-link"></span></a>All Features in One snippet</h2>
+<a id="all-features-in-one-snippet" class="anchor" href="#all-features-in-one-snippet" aria-hidden="true"><span class="octicon octicon-link"></span></a>All Features in One snippet</h2>
 
-<div class="highlight highlight-erlang"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">index</span><span class="p">).</span>
-<span class="p">-</span><span class="ni">compile</span><span class="p">(</span><span class="n">export_all</span><span class="p">).</span>
-<span class="p">-</span><span class="ni">include_lib</span><span class="p">(</span><span class="s">"n2o/include/wf.hrl"</span><span class="p">).</span>
+<div class="highlight highlight-erlang"><pre>-<span class="pl-k">module</span>(<span class="pl-en">index</span>).
+-<span class="pl-k">compile</span>(<span class="pl-c1">export_all</span>).
+-<span class="pl-k">include_lib</span>(<span class="pl-s"><span class="pl-pds">"</span>n2o/include/wf.hrl<span class="pl-pds">"</span></span>).
 
-<span class="nf">peer</span><span class="p">()</span>    <span class="o">-&gt;</span> <span class="nn">io_lib</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"</span><span class="si">~p</span><span class="s">"</span><span class="p">,[</span><span class="nn">wf</span><span class="p">:</span><span class="nf">peer</span><span class="p">(</span><span class="o">?</span><span class="nv">REQ</span><span class="p">)]).</span>
-<span class="nf">message</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nn">wf</span><span class="p">:</span><span class="nf">js_escape</span><span class="p">(</span><span class="nn">wf</span><span class="p">:</span><span class="nf">html_encode</span><span class="p">(</span><span class="nn">wf</span><span class="p">:</span><span class="nf">q</span><span class="p">(</span><span class="n">message</span><span class="p">))).</span>
-<span class="nf">main</span><span class="p">()</span>    <span class="o">-&gt;</span> <span class="nl">#dtl</span><span class="p">{</span><span class="n">file</span><span class="o">=</span><span class="s">"index"</span><span class="p">,</span><span class="n">app</span><span class="o">=</span><span class="n">n2o_sample</span><span class="p">,</span><span class="n">bindings</span><span class="o">=</span><span class="p">[{</span><span class="n">body</span><span class="p">,</span><span class="n">body</span><span class="p">()}]}.</span>
-<span class="nf">body</span><span class="p">()</span> <span class="o">-&gt;</span>
-    <span class="p">{</span><span class="n">ok</span><span class="p">,</span><span class="nv">Pid</span><span class="p">}</span> <span class="o">=</span> <span class="nn">wf</span><span class="p">:</span><span class="nf">comet</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">chat_loop</span><span class="p">()</span> <span class="k">end</span><span class="p">),</span>
-    <span class="p">[</span> <span class="nl">#panel</span><span class="p">{</span><span class="n">id</span><span class="o">=</span><span class="n">history</span><span class="p">},</span> <span class="nl">#textbox</span><span class="p">{</span><span class="n">id</span><span class="o">=</span><span class="n">message</span><span class="p">},</span>
-      <span class="nl">#button</span><span class="p">{</span><span class="n">id</span><span class="o">=</span><span class="nb">send</span><span class="p">,</span><span class="n">body</span><span class="o">=</span><span class="s">"Chat"</span><span class="p">,</span><span class="n">postback</span><span class="o">=</span><span class="p">{</span><span class="n">chat</span><span class="p">,</span><span class="nv">Pid</span><span class="p">},</span><span class="n">source</span><span class="o">=</span><span class="p">[</span><span class="n">message</span><span class="p">]}</span> <span class="p">].</span>
+<span class="pl-en">peer</span>()    <span class="pl-k">-&gt;</span> <span class="pl-en">io_lib</span>:<span class="pl-en">format</span>(<span class="pl-s"><span class="pl-pds">"</span><span class="pl-c1">~p</span><span class="pl-pds">"</span></span>,[<span class="pl-en">wf</span>:<span class="pl-en">peer</span>(<span class="pl-k">?</span><span class="pl-en">REQ</span>)]).
+<span class="pl-en">message</span>() <span class="pl-k">-&gt;</span> <span class="pl-en">wf</span>:<span class="pl-en">js_escape</span>(<span class="pl-en">wf</span>:<span class="pl-en">html_encode</span>(<span class="pl-en">wf</span>:<span class="pl-en">q</span>(<span class="pl-c1">message</span>))).
+<span class="pl-en">main</span>()    <span class="pl-k">-&gt;</span> <span class="pl-k">#</span><span class="pl-en">dtl</span>{<span class="pl-smi">file</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>index<span class="pl-pds">"</span></span>,<span class="pl-smi">app</span><span class="pl-k">=</span><span class="pl-c1">n2o_sample</span>,<span class="pl-smi">bindings</span><span class="pl-k">=</span>[{<span class="pl-c1">body</span>,<span class="pl-en">body</span>()}]}.
+<span class="pl-en">body</span>() <span class="pl-k">-&gt;</span>
+    {<span class="pl-c1">ok</span>,<span class="pl-smi">Pid</span>} <span class="pl-k">=</span> <span class="pl-en">wf</span>:<span class="pl-en">comet</span>(<span class="pl-k">fun</span>() -&gt; <span class="pl-en">chat_loop</span>() <span class="pl-k">end</span>),
+    [ <span class="pl-k">#</span><span class="pl-en">panel</span>{<span class="pl-smi">id</span><span class="pl-k">=</span><span class="pl-c1">history</span>}, <span class="pl-k">#</span><span class="pl-en">textbox</span>{<span class="pl-smi">id</span><span class="pl-k">=</span><span class="pl-c1">message</span>},
+      <span class="pl-k">#</span><span class="pl-en">button</span>{<span class="pl-smi">id</span><span class="pl-k">=</span><span class="pl-c1">send</span>,<span class="pl-smi">body</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>Chat<span class="pl-pds">"</span></span>,<span class="pl-smi">postback</span><span class="pl-k">=</span>{<span class="pl-c1">chat</span>,<span class="pl-smi">Pid</span>},<span class="pl-smi">source</span><span class="pl-k">=</span>[<span class="pl-c1">message</span>]} ].
 
-<span class="nf">event</span><span class="p">(</span><span class="n">init</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nn">wf</span><span class="p">:</span><span class="nf">reg</span><span class="p">(</span><span class="n">room</span><span class="p">);</span>
-<span class="nf">event</span><span class="p">({</span><span class="n">chat</span><span class="p">,</span><span class="nv">Pid</span><span class="p">})</span> <span class="o">-&gt;</span> <span class="nv">Pid</span> <span class="o">!</span> <span class="p">{</span><span class="n">peer</span><span class="p">(),</span> <span class="n">message</span><span class="p">()};</span>
-<span class="nf">event</span><span class="p">(</span><span class="nv">Event</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">skip</span><span class="p">.</span>
+<span class="pl-en">event</span>(<span class="pl-c1">init</span>) <span class="pl-k">-&gt;</span> <span class="pl-en">wf</span>:<span class="pl-en">reg</span>(<span class="pl-c1">room</span>);
+<span class="pl-en">event</span>({<span class="pl-c1">chat</span>,<span class="pl-smi">Pid</span>}) <span class="pl-k">-&gt;</span> <span class="pl-smi">Pid</span> <span class="pl-k">!</span> {<span class="pl-en">peer</span>(), <span class="pl-en">message</span>()};
+<span class="pl-en">event</span>(<span class="pl-smi">Event</span>) <span class="pl-k">-&gt;</span> <span class="pl-c1">skip</span>.
 
-<span class="nf">chat_loop</span><span class="p">()</span> <span class="o">-&gt;</span>
-    <span class="k">receive</span> <span class="p">{</span><span class="nv">Peer</span><span class="p">,</span> <span class="nv">Message</span><span class="p">}</span> <span class="o">-&gt;</span>
-       <span class="nn">wf</span><span class="p">:</span><span class="nf">insert_bottom</span><span class="p">(</span><span class="n">history</span><span class="p">,</span><span class="nl">#panel</span><span class="p">{</span><span class="n">body</span><span class="o">=</span><span class="p">[</span><span class="nv">Peer</span><span class="p">,</span><span class="s">": "</span><span class="p">,</span><span class="nv">Message</span><span class="p">,</span><span class="nl">#br</span><span class="p">{}]}),</span>
-       <span class="nn">wf</span><span class="p">:</span><span class="nf">flush</span><span class="p">(</span><span class="n">room</span><span class="p">)</span> <span class="k">end</span><span class="p">,</span> <span class="n">chat_loop</span><span class="p">().</span>
-</pre></div>
+<span class="pl-en">chat_loop</span>() <span class="pl-k">-&gt;</span>
+    <span class="pl-k">receive</span> {<span class="pl-smi">Peer</span>, <span class="pl-smi">Message</span>} -&gt;
+       <span class="pl-en">wf</span>:<span class="pl-en">insert_bottom</span>(<span class="pl-c1">history</span>,<span class="pl-k">#</span><span class="pl-en">panel</span>{<span class="pl-smi">body</span><span class="pl-k">=</span>[<span class="pl-smi">Peer</span>,<span class="pl-s"><span class="pl-pds">"</span>: <span class="pl-pds">"</span></span>,<span class="pl-smi">Message</span>,<span class="pl-k">#</span><span class="pl-en">br</span>{}]}),
+       <span class="pl-en">wf</span>:<span class="pl-en">flush</span>(<span class="pl-c1">room</span>) <span class="pl-k">end</span>, <span class="pl-en">chat_loop</span>().</pre></div>
 
 <p>And try to compare how this functionality would be implemented
 with your favourite language/framework.</p>
 
 <h2>
-<a name="performance" class="anchor" href="#performance"><span class="octicon octicon-link"></span></a>Performance</h2>
+<a id="performance" class="anchor" href="#performance" aria-hidden="true"><span class="octicon octicon-link"></span></a>Performance</h2>
 
 <p>We are using for measurement ab, httperf, wrk and siege, all of them. The most valuable storm
 created by wrk and it is not achieved in real apps but could show us the internal throughput
@@ -101,19 +100,19 @@ for each request. So this data shows internal data throughput by wrk:</p>
 <tbody>
 <tr>
 <td>PHP5 FCGI</td>
-<td>Simple script with two &lt;?php print "OK"; ?&gt; terms inside</td>
+<td>Simple script with two &lt;?php print "OK"; ?&gt;</td>
 <td>5K</td>
 <td>timeouts</td>
 </tr>
 <tr>
 <td>ChicagoBoss</td>
-<td>No sessions, No DSL, Simple template with two variable</td>
+<td>No sessions, No DSL, Simple DTL</td>
 <td>500</td>
 <td>no</td>
 </tr>
 <tr>
 <td>Nitrogen</td>
-<td>No sessions, No DSL, Simple template with two variable</td>
+<td>No sessions, No DSL, Simple DTL</td>
 <td>1K</td>
 <td>no</td>
 </tr>
@@ -139,7 +138,7 @@ for each request. So this data shows internal data throughput by wrk:</p>
 </table>
 
 <h2>
-<a name="kickstart-bootstrap" class="anchor" href="#kickstart-bootstrap"><span class="octicon octicon-link"></span></a>Kickstart Bootstrap</h2>
+<a id="kickstart-bootstrap" class="anchor" href="#kickstart-bootstrap" aria-hidden="true"><span class="octicon octicon-link"></span></a>Kickstart Bootstrap</h2>
 
 <p>To try N2O you just need to clone a N2O repo from Github and build.
 We use very small and powerful mad tool designed for our Web Stack.</p>
@@ -157,16 +156,47 @@ $ ./mad deps compile plan repl
 </code></pre>
 
 <h2>
-<a name="support" class="anchor" href="#support"><span class="octicon octicon-link"></span></a>Support</h2>
+<a id="erlang-version" class="anchor" href="#erlang-version" aria-hidden="true"><span class="octicon octicon-link"></span></a>Erlang version</h2>
+
+<p>We don't accept any reports of problems with ESL or Ubuntu packaging. We do support only Erlang built from sources, built with kerl or installed on Mac with brew. If you have problems with your favourite Erlang package for your OS, please report issues to package maintainer.</p>
+
+<h2>
+<a id="posting-issues-on-github" class="anchor" href="#posting-issues-on-github" aria-hidden="true"><span class="octicon octicon-link"></span></a>Posting Issues on Github</h2>
+
+<p>Thank you for using N2O (you've made a wise choice) and your contributions to help make it better.
+Before posting an issue in Github, please contact us via the options listed below in the support section. Doing so will help us determine whether your issue is a suggested feature, refactor of existing code, bug, etc, that needs to be posted to GitHub for the contributing development community of N2O to incorporate. DO NOT post issues to GitHub related to misuses of N2O, all such issues will be closed. </p>
+
+<h2>
+<a id="support" class="anchor" href="#support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support</h2>
 
 <ul>
+<li><a href="https://gitter.im/5HT/n2o?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter"></a></li>
 <li>IRC Channel #n2o on FreeNode 24/7</li>
-<li>Official N2O Book <a href="http://synrc.com/framework/web/">HTML</a> and <a href="https://synrc.com/apps/n2o/doc/book.pdf">PDF</a>
+</ul>
+
+<h2>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h2>
+
+<p>If you are new or need to determine whether the N2O architecture and philosophy is a fit for your project</p>
+
+<ul>
+<li>Official N2O Book <a href="https://synrc.com/apps/n2o/doc/book.pdf">PDF</a>
 </li>
 </ul>
 
 <h2>
-<a name="credits" class="anchor" href="#credits"><span class="octicon octicon-link"></span></a>Credits</h2>
+<a id="windows-users" class="anchor" href="#windows-users" aria-hidden="true"><span class="octicon octicon-link"></span></a>Windows Users</h2>
+
+<p>For windows you should install <a href="http://msys2.github.io">http://msys2.github.io</a> and appropriative packages to use Synrc Stack:</p>
+
+<ul>
+<li>git</li>
+<li>mc</li>
+<li>sh</li>
+</ul>
+
+<h2>
+<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits</h2>
 
 <ul>
 <li>Maxim Sokhatsky -- core, shen, windows</li>
@@ -188,8 +218,8 @@ $ ./mad deps compile plan repl
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">N2O maintained by <a href="https://github.com/5HT">5HT</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+        <p class="copyright">N2O maintained by <a href="https://github.com/synrc">synrc</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
 
