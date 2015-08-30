@@ -46,7 +46,8 @@
 <li>Endpoints: <strong>WebSocket</strong>, HTTP, <a href="http://synrc.github.io/rest">REST</a>
 </li>
 <li>High Performance Protocol Relay</li>
-<li>Smallest possible codebase (1K LOC)</li>
+<li>Smallest possible codebase — <strong>1K</strong> <strong>LOC</strong>
+</li>
 <li>BEAM/LING support on posix, arm, mips and xen platforms</li>
 <li>Single-file atomic packaging with <a href="http://synrc.github.io/mad">MAD</a>
 </li>
@@ -68,62 +69,17 @@
 </ul>
 
 <h2>
-<a id="project-structure" class="anchor" href="#project-structure" aria-hidden="true"><span class="octicon octicon-link"></span></a>Project Structure</h2>
-
-<p>We polished directory tree to show you the several years of purity evolution.</p>
-
-<pre><code>├── endpoints
-│   ├── cowboy
-│   │   ├── bullet_handler.erl
-│   │   ├── n2o_bullet.erl
-│   │   ├── n2o_cowboy.erl
-│   │   └── n2o_dynalo.erl
-│   ├── n2o_document.erl
-│   └── n2o_websocket.erl
-├── formatters
-│   ├── wf_convert.erl
-│   └── wf_utils.erl
-├── handlers
-│   ├── n2o_auth.erl
-│   ├── n2o_dynroute.erl
-│   ├── n2o_error.erl
-│   ├── n2o_io.erl
-│   ├── n2o_log.erl
-│   ├── n2o_mq.erl
-│   ├── n2o_pickle.erl
-│   ├── n2o_query.erl
-│   ├── n2o_secret.erl
-│   └── n2o_session.erl
-├── n2o.app.src
-├── n2o_app.erl
-├── n2o_sup.erl
-├── protocols
-│   ├── n2o_binary.erl
-│   ├── n2o_client.erl
-│   ├── n2o_heart.erl
-│   ├── n2o_nitrogen.erl
-│   ├── n2o_rails.erl
-│   └── n2o_text.erl
-├── static_file.erl
-├── wf.erl
-└── wf_context.erl
-</code></pre>
-
-<p>That is all files related to what we called N2O application server,
-the implementation of N2O core protocol. That is how it looks like:</p>
-
-<h2>
 <a id="optional-dependencies" class="anchor" href="#optional-dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Optional Dependencies</h2>
 
 <p>For raw N2O use with BERT message formatter you need only one N2O dependecy,
 but if you want to use DTL templates, JSON message formatter, SHEN JavaScript Compiler
 or NITRO Nitrogen DSL you can plug all of them separately.</p>
 
-<div class="highlight highlight-erlang"><pre>{<span class="pl-c1">n2o</span>,    <span class="pl-s"><span class="pl-pds">"</span>.*<span class="pl-pds">"</span></span>, {<span class="pl-c1">git</span>, <span class="pl-s"><span class="pl-pds">"</span>git://github.com/synrc/n2o<span class="pl-pds">"</span></span>,          {<span class="pl-c1">tag</span>, <span class="pl-s"><span class="pl-pds">"</span>2.8<span class="pl-pds">"</span></span>}   }},
-{<span class="pl-c1">nitro</span>,  <span class="pl-s"><span class="pl-pds">"</span>.*<span class="pl-pds">"</span></span>, {<span class="pl-c1">git</span>, <span class="pl-s"><span class="pl-pds">"</span>git://github.com/synrc/nitro<span class="pl-pds">"</span></span>,        {<span class="pl-c1">tag</span>, <span class="pl-s"><span class="pl-pds">"</span>2.8<span class="pl-pds">"</span></span>}   }},
-{<span class="pl-c1">shen</span>,   <span class="pl-s"><span class="pl-pds">"</span>.*<span class="pl-pds">"</span></span>, {<span class="pl-c1">git</span>, <span class="pl-s"><span class="pl-pds">"</span>git://github.com/synrc/shen<span class="pl-pds">"</span></span>,         {<span class="pl-c1">tag</span>, <span class="pl-s"><span class="pl-pds">"</span>1.5<span class="pl-pds">"</span></span>}   }},
-{<span class="pl-c1">jsone</span>,  <span class="pl-s"><span class="pl-pds">"</span>.*<span class="pl-pds">"</span></span>, {<span class="pl-c1">git</span>, <span class="pl-s"><span class="pl-pds">"</span>git://github.com/sile/jsone.git<span class="pl-pds">"</span></span>,     {<span class="pl-c1">tag</span>,<span class="pl-s"><span class="pl-pds">"</span>v0.3.3<span class="pl-pds">"</span></span>} }},
-{<span class="pl-c1">erlydtl</span>,<span class="pl-s"><span class="pl-pds">"</span>.*<span class="pl-pds">"</span></span>, {<span class="pl-c1">git</span>, <span class="pl-s"><span class="pl-pds">"</span>git://github.com/evanmiller/erlydtl<span class="pl-pds">"</span></span>, {<span class="pl-c1">tag</span>, <span class="pl-s"><span class="pl-pds">"</span>0.8.0<span class="pl-pds">"</span></span>} }},</pre></div>
+<div class="highlight highlight-erlang"><pre>{<span class="pl-c1">n2o</span>,    <span class="pl-s"><span class="pl-pds">"</span>.*<span class="pl-pds">"</span></span>,{<span class="pl-c1">git</span>,<span class="pl-s"><span class="pl-pds">"</span>git://github.com/synrc/n2o<span class="pl-pds">"</span></span>,         {<span class="pl-c1">tag</span>, <span class="pl-s"><span class="pl-pds">"</span>2.8<span class="pl-pds">"</span></span>}}},
+{<span class="pl-c1">nitro</span>,  <span class="pl-s"><span class="pl-pds">"</span>.*<span class="pl-pds">"</span></span>,{<span class="pl-c1">git</span>,<span class="pl-s"><span class="pl-pds">"</span>git://github.com/synrc/nitro<span class="pl-pds">"</span></span>,       {<span class="pl-c1">tag</span>, <span class="pl-s"><span class="pl-pds">"</span>2.8<span class="pl-pds">"</span></span>}}},
+{<span class="pl-c1">shen</span>,   <span class="pl-s"><span class="pl-pds">"</span>.*<span class="pl-pds">"</span></span>,{<span class="pl-c1">git</span>,<span class="pl-s"><span class="pl-pds">"</span>git://github.com/synrc/shen<span class="pl-pds">"</span></span>,        {<span class="pl-c1">tag</span>, <span class="pl-s"><span class="pl-pds">"</span>1.5<span class="pl-pds">"</span></span>}}},
+{<span class="pl-c1">jsone</span>,  <span class="pl-s"><span class="pl-pds">"</span>.*<span class="pl-pds">"</span></span>,{<span class="pl-c1">git</span>,<span class="pl-s"><span class="pl-pds">"</span>git://github.com/sile/jsone.git<span class="pl-pds">"</span></span>,    {<span class="pl-c1">tag</span>,<span class="pl-s"><span class="pl-pds">"</span>v0.3.3<span class="pl-pds">"</span></span>}}},
+{<span class="pl-c1">erlydtl</span>,<span class="pl-s"><span class="pl-pds">"</span>.*<span class="pl-pds">"</span></span>,{<span class="pl-c1">git</span>,<span class="pl-s"><span class="pl-pds">"</span>git://github.com/evanmiller/erlydtl<span class="pl-pds">"</span></span>,{<span class="pl-c1">tag</span>,<span class="pl-s"><span class="pl-pds">"</span>0.8.0<span class="pl-pds">"</span></span>}}},</pre></div>
 
 <h2>
 <a id="message-formatters" class="anchor" href="#message-formatters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Message Formatters</h2>
@@ -293,16 +249,16 @@ appropriative packages to use Synrc Stack:</p>
 <a id="credits" class="anchor" href="#credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits</h2>
 
 <ul>
-<li>Maxim Sokhatsky -- core, shen, windows</li>
-<li>Dmitry Bushmelev -- endpoints, yaws, cowboy</li>
-<li>Andrii Zadorozhnii -- elements, actions, handlers</li>
-<li>Vladimir Kirillov -- mac, bsd, xen, linux support</li>
-<li>Andrey Martemyanov -- binary protocols</li>
-<li>Oleksandr Nikitin -- security</li>
-<li>Anton Logvinenko -- doc</li>
-<li>Roman Shestakov -- advanced elements, ct</li>
-<li>Jesse Gumm -- nitrogen, help</li>
-<li>Rusty Klophaus -- original author</li>
+<li>Maxim Sokhatsky — core, shen, windows</li>
+<li>Dmitry Bushmelev — endpoints, yaws, cowboy</li>
+<li>Andrii Zadorozhnii — elements, actions, handlers</li>
+<li>Vladimir Kirillov — mac, bsd, xen, linux support</li>
+<li>Andrey Martemyanov — binary protocols</li>
+<li>Oleksandr Nikitin — security</li>
+<li>Anton Logvinenko — doc</li>
+<li>Roman Shestakov — advanced elements, ct</li>
+<li>Jesse Gumm — nitrogen, help</li>
+<li>Rusty Klophaus — original author</li>
 </ul>
 
 <p>OM A HUM</p>
