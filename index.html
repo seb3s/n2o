@@ -41,7 +41,7 @@
 
 <ul>
 <li>Formatters: <strong>BERT</strong>, JSON — changeable on the fly</li>
-<li>Protocols: <a href="http://5ht.co/n2o.htm">N2O</a>
+<li>Protocols: <a href="http://5ht.co/n2o.htm">N2O</a>, <a href="http://5ht.co/n2o.htm">NITRO</a>, <a href="http://5ht.co/n2o.htm">SPA</a>, <a href="http://5ht.co/ftp.htm">FTP</a>
 </li>
 <li>Endpoints: <strong>WebSocket</strong>, HTTP, <a href="http://synrc.github.io/rest">REST</a>
 </li>
@@ -59,23 +59,22 @@
 </li>
 <li>Sessions: server driven</li>
 <li>DOM Language: SHEN JavaScript Compiler</li>
-<li>Error Logging: IO, LOGGER, <a href="http://crashdump.io">crashdump.io</a>
-</li>
+<li>Error Logging: IO, LOGGER</li>
 <li>Security: PLAIN, AES CBC 128</li>
 </ul>
 </li>
-<li>Speed: <strong>15K</strong> <strong>conn/s</strong> easily</li>
+<li>Speed: <strong>30K</strong> <strong>conn/s</strong> at notebook easily</li>
 <li>Samples: Skyline (DSL), Games (SPA), Review (KVS), Sample (MAD)</li>
 </ul>
 
 <h2>
 <a id="optional-dependencies" class="anchor" href="#optional-dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Optional Dependencies</h2>
 
-<p>For raw N2O use with BERT message formatter you need only one N2O dependecy,
-but if you want to use DTL templates, JSON message formatter, SHEN JavaScript Compiler
-or NITRO Nitrogen DSL you can plug all of them separately.</p>
+<p>N2O comes with BERT message formatter support out of the box, and you only need
+one N2O dependency in this case. Should you need DTL templates, JSON message formatter, 
+SHEN JavaScript Compiler or NITRO Nitrogen DSL you can plug all of them in separately:</p>
 
-<div class="highlight highlight-erlang"><pre>{<span class="pl-c1">n2o</span>,    <span class="pl-s"><span class="pl-pds">"</span>.*<span class="pl-pds">"</span></span>,{<span class="pl-c1">git</span>,<span class="pl-s"><span class="pl-pds">"</span>git://github.com/synrc/n2o<span class="pl-pds">"</span></span>,         {<span class="pl-c1">tag</span>, <span class="pl-s"><span class="pl-pds">"</span>2.8<span class="pl-pds">"</span></span>}}},
+<div class="highlight highlight-source-erlang"><pre>{<span class="pl-c1">n2o</span>,    <span class="pl-s"><span class="pl-pds">"</span>.*<span class="pl-pds">"</span></span>,{<span class="pl-c1">git</span>,<span class="pl-s"><span class="pl-pds">"</span>git://github.com/synrc/n2o<span class="pl-pds">"</span></span>,         {<span class="pl-c1">tag</span>, <span class="pl-s"><span class="pl-pds">"</span>2.8<span class="pl-pds">"</span></span>}}},
 {<span class="pl-c1">nitro</span>,  <span class="pl-s"><span class="pl-pds">"</span>.*<span class="pl-pds">"</span></span>,{<span class="pl-c1">git</span>,<span class="pl-s"><span class="pl-pds">"</span>git://github.com/synrc/nitro<span class="pl-pds">"</span></span>,       {<span class="pl-c1">tag</span>, <span class="pl-s"><span class="pl-pds">"</span>2.8<span class="pl-pds">"</span></span>}}},
 {<span class="pl-c1">shen</span>,   <span class="pl-s"><span class="pl-pds">"</span>.*<span class="pl-pds">"</span></span>,{<span class="pl-c1">git</span>,<span class="pl-s"><span class="pl-pds">"</span>git://github.com/synrc/shen<span class="pl-pds">"</span></span>,        {<span class="pl-c1">tag</span>, <span class="pl-s"><span class="pl-pds">"</span>1.5<span class="pl-pds">"</span></span>}}},
 {<span class="pl-c1">jsone</span>,  <span class="pl-s"><span class="pl-pds">"</span>.*<span class="pl-pds">"</span></span>,{<span class="pl-c1">git</span>,<span class="pl-s"><span class="pl-pds">"</span>git://github.com/sile/jsone.git<span class="pl-pds">"</span></span>,    {<span class="pl-c1">tag</span>,<span class="pl-s"><span class="pl-pds">"</span>v0.3.3<span class="pl-pds">"</span></span>}}},
@@ -85,7 +84,7 @@ or NITRO Nitrogen DSL you can plug all of them separately.</p>
 <a id="message-formatters" class="anchor" href="#message-formatters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Message Formatters</h2>
 
 <p>You can use any message formmatter at the bottom of N2O protocol.
-The IO message of N2O protocol could be seen as follows:</p>
+IO messages supported by the N2O protocol are as follows:</p>
 
 <pre><code>1. BERT : {io,"console.log('hello')",1}
 2. WAMP : [io,"console.log('hello')",1]
@@ -94,21 +93,22 @@ The IO message of N2O protocol could be seen as follows:</p>
 5. XML  : &lt;io&gt;&lt;eval&gt;console.log('hello')&lt;/eval&gt;&lt;data&gt;1&lt;/data&gt;&lt;/io&gt;
 </code></pre>
 
-<p>Moreover you can switch channel termination formatter on the fly
-in the same WebSocket session.</p>
+<p>Besides, you can even switch a channel termination formatter on the fly
+within one WebSocket session.</p>
 
 <h2>
 <a id="all-features-in-one-snippet" class="anchor" href="#all-features-in-one-snippet" aria-hidden="true"><span class="octicon octicon-link"></span></a>All Features in One snippet</h2>
 
-<div class="highlight highlight-erlang"><pre>-<span class="pl-k">module</span>(<span class="pl-en">index</span>).
+<div class="highlight highlight-source-erlang"><pre>-<span class="pl-k">module</span>(<span class="pl-en">index</span>).
 -<span class="pl-k">compile</span>(<span class="pl-c1">export_all</span>).
+-<span class="pl-k">include_lib</span>(<span class="pl-s"><span class="pl-pds">"</span>nitro/include/nitro.hrl<span class="pl-pds">"</span></span>).
 -<span class="pl-k">include_lib</span>(<span class="pl-s"><span class="pl-pds">"</span>n2o/include/wf.hrl<span class="pl-pds">"</span></span>).
 
 <span class="pl-en">peer</span>()    <span class="pl-k">-&gt;</span> <span class="pl-en">io_lib</span>:<span class="pl-en">format</span>(<span class="pl-s"><span class="pl-pds">"</span><span class="pl-c1">~p</span><span class="pl-pds">"</span></span>,[<span class="pl-en">wf</span>:<span class="pl-en">peer</span>(<span class="pl-k">?</span><span class="pl-en">REQ</span>)]).
 <span class="pl-en">message</span>() <span class="pl-k">-&gt;</span> <span class="pl-en">wf</span>:<span class="pl-en">js_escape</span>(<span class="pl-en">wf</span>:<span class="pl-en">html_encode</span>(<span class="pl-en">wf</span>:<span class="pl-en">q</span>(<span class="pl-c1">message</span>))).
 <span class="pl-en">main</span>()    <span class="pl-k">-&gt;</span> <span class="pl-k">#</span><span class="pl-en">dtl</span>{<span class="pl-smi">file</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>index<span class="pl-pds">"</span></span>,<span class="pl-smi">app</span><span class="pl-k">=</span><span class="pl-c1">n2o_sample</span>,<span class="pl-smi">bindings</span><span class="pl-k">=</span>[{<span class="pl-c1">body</span>,<span class="pl-en">body</span>()}]}.
 <span class="pl-en">body</span>() <span class="pl-k">-&gt;</span>
-    {<span class="pl-c1">ok</span>,<span class="pl-smi">Pid</span>} <span class="pl-k">=</span> <span class="pl-en">wf</span>:<span class="pl-en">comet</span>(<span class="pl-k">fun</span>() -&gt; <span class="pl-en">chat_loop</span>() <span class="pl-k">end</span>),
+    {<span class="pl-smi">Pid</span>,<span class="pl-v">_</span>} <span class="pl-k">=</span> <span class="pl-en">wf</span>:<span class="pl-en">async</span>(<span class="pl-k">fun</span>(<span class="pl-smi">X</span>) -&gt; <span class="pl-en">chat_loop</span>(<span class="pl-smi">X</span>) <span class="pl-k">end</span>),
     [ <span class="pl-k">#</span><span class="pl-en">panel</span>{<span class="pl-smi">id</span><span class="pl-k">=</span><span class="pl-c1">history</span>}, <span class="pl-k">#</span><span class="pl-en">textbox</span>{<span class="pl-smi">id</span><span class="pl-k">=</span><span class="pl-c1">message</span>},
       <span class="pl-k">#</span><span class="pl-en">button</span>{<span class="pl-smi">id</span><span class="pl-k">=</span><span class="pl-c1">send</span>,<span class="pl-smi">body</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>Chat<span class="pl-pds">"</span></span>,<span class="pl-smi">postback</span><span class="pl-k">=</span>{<span class="pl-c1">chat</span>,<span class="pl-smi">Pid</span>},<span class="pl-smi">source</span><span class="pl-k">=</span>[<span class="pl-c1">message</span>]} ].
 
@@ -116,18 +116,20 @@ in the same WebSocket session.</p>
 <span class="pl-en">event</span>({<span class="pl-c1">chat</span>,<span class="pl-smi">Pid</span>}) <span class="pl-k">-&gt;</span> <span class="pl-smi">Pid</span> <span class="pl-k">!</span> {<span class="pl-en">peer</span>(), <span class="pl-en">message</span>()};
 <span class="pl-en">event</span>(<span class="pl-smi">Event</span>) <span class="pl-k">-&gt;</span> <span class="pl-c1">skip</span>.
 
-<span class="pl-en">chat_loop</span>() <span class="pl-k">-&gt;</span>
-    <span class="pl-k">receive</span> {<span class="pl-smi">Peer</span>, <span class="pl-smi">Message</span>} -&gt;
+<span class="pl-en">chat_loop</span>({<span class="pl-smi">Peer</span>, <span class="pl-smi">Message</span>} ) <span class="pl-k">-&gt;</span>
        <span class="pl-en">wf</span>:<span class="pl-en">insert_bottom</span>(<span class="pl-c1">history</span>,<span class="pl-k">#</span><span class="pl-en">panel</span>{<span class="pl-smi">body</span><span class="pl-k">=</span>[<span class="pl-smi">Peer</span>,<span class="pl-s"><span class="pl-pds">"</span>: <span class="pl-pds">"</span></span>,<span class="pl-smi">Message</span>,<span class="pl-k">#</span><span class="pl-en">br</span>{}]}),
-       <span class="pl-en">wf</span>:<span class="pl-en">flush</span>(<span class="pl-c1">room</span>) <span class="pl-k">end</span>, <span class="pl-en">chat_loop</span>().</pre></div>
+       <span class="pl-en">wf</span>:<span class="pl-en">flush</span>(<span class="pl-c1">room</span>) <span class="pl-k">end</span>.</pre></div>
 
 <h2>
 <a id="performance" class="anchor" href="#performance" aria-hidden="true"><span class="octicon octicon-link"></span></a>Performance</h2>
 
-<p>We are using for measurement ab, httperf, wrk and siege, all of them. The most valuable storm
-created by wrk and it is not achieved in real apps but could show us the internal throughput
-of individual components. The most near to real life apps is siege who also make DNS lookup
-for each request. So this data shows internal data throughput by wrk:</p>
+<p>ab, httperf, wrk and siege are all used for measuring performance. 
+The most valuable request hell is created by wrk and even though it 
+is not achievable in real apps, it can demonstrate internal throughput 
+of certain individual components. </p>
+
+<p>The nearest to real life apps is siege which also performs a DNS lookup
+for each request. The data below shows internal data throughput by wrk:</p>
 
 <table>
 <thead>
@@ -181,17 +183,17 @@ for each request. So this data shows internal data throughput by wrk:</p>
 <h2>
 <a id="kickstart-bootstrap" class="anchor" href="#kickstart-bootstrap" aria-hidden="true"><span class="octicon octicon-link"></span></a>Kickstart Bootstrap</h2>
 
-<p>To try N2O you just need to clone a N2O repo from Github and build.
-We use very small and powerful mad tool designed for our Web Stack.</p>
+<p>To try N2O you  need to clone a N2O repo from Github and build it.
+We use a very small and powerful tool called mad designed specially for our Web Stack.</p>
 
-<pre><code>$ git clone git://github.com/5HT/n2o
+<pre><code>$ git clone git://github.com/synrc/n2o
 $ cd n2o/samples
 $ ./mad deps compile plan repl
 </code></pre>
 
-<p>Now you can try: <a href="http://localhost:8000">http://localhost:8000</a></p>
+<p>Now you can try it out: <a href="http://localhost:8000">http://localhost:8000</a></p>
 
-<p>LINUX NOTE: if you want to have online recompilation you should do at first:</p>
+<p>LINUX NOTE: if you want to have online recompilation you should install <code>inotify-tools</code> first:</p>
 
 <pre><code>$ sudo apt-get install inotify-tools
 </code></pre>
@@ -199,9 +201,9 @@ $ ./mad deps compile plan repl
 <h2>
 <a id="erlang-version" class="anchor" href="#erlang-version" aria-hidden="true"><span class="octicon octicon-link"></span></a>Erlang version</h2>
 
-<p>We don't accept any reports of problems with ESL or Ubuntu packaging.
-We do support only Erlang built from sources, official Windows package,
-built with kerl or installed on Mac with brew. If you have problems
+<p>We don't accept any reports of problems related to ESL or Ubuntu packaging.
+We only support Erlang built from sources, official Windows package,
+built with kerl or installed on Mac with homebrew. If you have any problems
 with your favourite Erlang package for your OS, please report issues
 to package maintainer.</p>
 
@@ -209,7 +211,7 @@ to package maintainer.</p>
 <a id="posting-issues-on-github" class="anchor" href="#posting-issues-on-github" aria-hidden="true"><span class="octicon octicon-link"></span></a>Posting Issues on Github</h2>
 
 <p>Thank you for using N2O (you've made a wise choice) and your contributions
-to help make it better. Before posting an issue in Github, please contact
+to help make it better. Before posting an issue on Github, please contact
 us via the options listed below in the support section. Doing so will
 help us determine whether your issue is a suggested feature, refactor
 of existing code, bug, etc, that needs to be posted to GitHub for the
@@ -220,18 +222,18 @@ issues to GitHub related to misuses of N2O, all such issues will be closed.</p>
 <a id="support" class="anchor" href="#support" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support</h2>
 
 <ul>
-<li><a href="https://gitter.im/5HT/n2o?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter"></a></li>
+<li><a href="https://gitter.im/synrc/n2o?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter"></a></li>
 <li>IRC Channel #n2o on FreeNode 24/7</li>
 </ul>
 
 <h2>
 <a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h2>
 
-<p>If you are new or need to determine whether the N2O architecture
+<p>If you are new or you need to decide whether the N2O architecture
 and philosophy is a fit for your project</p>
 
 <ul>
-<li>Official N2O Book <a href="https://synrc.com/apps/n2o/doc/book.pdf">PDF</a>
+<li>Official N2O Book <a href="http://synrc.com/apps/n2o/doc/book.pdf">PDF</a>
 </li>
 </ul>
 
