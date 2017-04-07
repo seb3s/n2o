@@ -12,9 +12,11 @@ var active      = false,
 function N2O_start() {
     ws = new bullet(protocol + host + (port==""?"":":"+port) + "/ws" + querystring);
     ws.onmessage = function (evt) { // formatters loop
-    for (var i=0;i<protos.length;i++) { p = protos[i]; if (p.on(evt, p.do).status == "ok") return; } };
+        for (var i=0;i<protos.length;i++) { p = protos[i]; if (p.on(evt, p.do).status == "ok") return; } };
     ws.onopen = function() { if (!active) { console.log('Connect'); ws.send('N2O,'+transition.pid); active=true; } };
-    ws.onclose = function() { active = false; console.log('Disconnect'); }; next(); }
+    ws.onclose = function() { active = false; console.log('Disconnect'); }; 
+    next(); 
+}
 
 function qi(name) { return document.getElementById(name); }
 function qs(name) { return document.querySelector(name);  }

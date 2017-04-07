@@ -8,7 +8,7 @@
 % XHR
 
 init(T,R,O)                        -> upgrade(cowboy_req:header(<<"upgrade">>,R),{T,R,O}).
-websocket(R,<<"websocket">>)       -> {upgrade, protocol, cowboy_websocket};
+websocket(_R,<<"websocket">>)      -> {upgrade, protocol, cowboy_websocket};
 websocket(R,_)                     -> down(reply([],R,501)).
 upgrade({undefined,R},{T,R,O})     -> initialize(T,R,O);
 upgrade({B,R},_) when is_binary(B) -> websocket(R,cowboy_bstr:to_lower(B)).
@@ -29,13 +29,15 @@ type(_)                      -> binary.
 
 xhr({ok,R,S})                -> {ok,R,S};
 xhr({shutdown,R,S})          -> {shutdown,R,S};
-xhr({reply,D,R,S})           -> {ok,reply(D,R,200),S}.
+xhr({reply,D,R,S})           -> {ok,reply(D,xhr_type(D,R),200),S}.
+
+xhr_type(<<"PONG">>, R)      -> wf:header(<<"content-type">>, <<"text/plain">>, R);
+xhr_type(_D, R)              -> wf:header(<<"content-type">>, <<"application/json">>, R).
 
 % WebSocket
 
 websocket_info(I,R,S)        -> ws(n2o_proto:info(I,R,S)).
-websocket_handle(D,R,S)      -> ws(n2o_proto:stream(D,R,S));
-websocket_handle(_,R,S)      -> {ok,R,S,hibernate}.
+websocket_handle(D,R,S)      -> ws(n2o_proto:stream(D,R,S)).
 websocket_init(T,R,O)        -> ws(n2o_proto:init(T,R,[{formatter,bert}|O],ws)).
 websocket_terminate(_,R,S)   -> n2o_proto:terminate(R,S).
 
