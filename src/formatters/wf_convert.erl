@@ -23,12 +23,12 @@ inner_to_list(L) when is_list(L) -> L;
 inner_to_list(F) when is_float(F) -> float_to_list(F,[{decimals,9},compact]).
 
 to_atom(A) when is_atom(A) -> A;
-to_atom(B) when is_binary(B) -> to_atom(binary_to_list(B));
+to_atom(B) when is_binary(B) -> binary_to_atom(B, utf8);
 to_atom(I) when is_integer(I) -> to_atom(integer_to_list(I));
 to_atom(F) when is_float(F) -> to_atom(float_to_list(F,[{decimals,9},compact]));
 to_atom(L) when is_list(L) -> list_to_atom(binary_to_list(list_to_binary(L))).
 
-to_binary(A) when is_atom(A) -> atom_to_binary(A,latin1);
+to_binary(A) when is_atom(A) -> atom_to_binary(A, utf8);
 to_binary(B) when is_binary(B) -> B;
 to_binary(T) when is_tuple(T) -> term_to_binary(T);
 to_binary(I) when is_integer(I) -> to_binary(integer_to_list(I));
@@ -65,7 +65,7 @@ html_encode([H|T]) ->
 			%% Any integers above 255 are converted to their HTML encode equivilant,
 			%% Example: 7534 gets turned into &#7534;
 			[$&,$# | wf:to_list(BigNum)] ++ ";" ++ html_encode(T);
-		Tup when is_tuple(Tup) -> 
+		Tup when is_tuple(Tup) ->
 			throw({html_encode,encountered_tuple,Tup});
 		_ -> [H|html_encode(T)]
 	end.
