@@ -58,15 +58,24 @@ lookup_ets(Key) ->
     case Res of
          [] -> undefined;
          [Value] -> Value;
-         Values -> Values 
+         Values -> Values
     end.
 
 clear() -> clear(session_id()).
 clear(Session) ->
-    n2o_async:stop(async, {xhrpoll, Session}),
+    async_stop(async, {xhrpoll, Session}),
     [ ets:delete(cookies,X) || X <- ets:select(cookies,
         ets:fun2ms(fun(A) when (element(1,element(1,A)) == Session) -> element(1,A) end)) ],
     ok.
+
+%% 3S variant without the gen_server call to get the launch group
+%% in order to avoid a race condition that occurs when sessions are gc'ed at very fast rate
+%% because of multiple clear(session) calls by invalidate_sessions when they expire at the same time
+%% race with gs_meeting:handle_info({'EXIT', Pid, Reason}, State) and subsequent calls
+async_stop(Class, Name) ->
+    Group = n2o,
+    [supervisor:F(Group,{Class,Name}) || F<-[terminate_child,delete_child]],
+    wf:cache({Class,Name},undefined).
 
 cookie_expire(SecondsToLive) ->
     Seconds = calendar:datetime_to_gregorian_seconds(calendar:local_time()),
@@ -110,12 +119,12 @@ session_cookie_name(From) -> wf:to_binary([wf:to_binary(From), <<"-sid">>]).
 %%    ets:insert(cookies,{{Session,Key},<<"/">>,os:timestamp(),Till,Value}),
 %%    Value.
 
-set_value(Key, Value) -> 
+set_value(Key, Value) ->
     set_value(session_id(), Key, Value).
 
-set_value(SessionId, Key, Value) -> 
+set_value(SessionId, Key, Value) ->
     Lookup = case lookup_ets({SessionId,<<"auth">>}) of
-        undefined -> 
+        undefined ->
             session_sid(SessionId, site),
             lookup_ets({SessionId,<<"auth">>});
         Res -> Res
@@ -132,17 +141,17 @@ set_value(SessionId, Key, Value) ->
 %% 3S version is based on <<"auth">> session entries only to expire session's content
 %% can not rely on get_value coz behaviour is modified compared to original (prolongation)
 invalidate_sessions() ->
-    ets:foldl(fun(X,A) -> 
+    ets:foldl(fun(X,A) ->
         {{SessionId, Key}, _, Auth_Issued, Auth_Till, _} = X,
-        case Key of 
-            <<"auth">> -> 
+        case Key of
+            <<"auth">> ->
                 case expired(Auth_Issued,Auth_Till) of
                     true -> clear(SessionId);
                     false -> nop
                 end;
             _ -> nop
         end,
-        A 
+        A
         end, 0, cookies).
 
 get_value(Key, DefaultValue) ->
@@ -160,12 +169,12 @@ get_value(SessionId, Key, DefaultValue) ->
                     ets:insert(cookies,{Auth_Key,Auth_Path,Auth_Issued,NewTill,Auth_Value});
                 true ->
                     clear(SessionId),
-                    session_sid(SessionId, site) 
+                    session_sid(SessionId, site)
             end
     end,
     case lookup_ets({SessionId,Key}) of
         undefined -> DefaultValue;
-        {_,_,_,_,Value} -> Value 
+        {_,_,_,_,Value} -> Value
     end.
 
 remove_value(Key) -> ets:delete(cookies,Key).
