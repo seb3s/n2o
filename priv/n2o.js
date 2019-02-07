@@ -12,10 +12,10 @@ var active      = false,
 function N2O_start() {
     ws = new bullet(protocol + host + (port==""?"":":"+port) + "/ws" + querystring);
     ws.onmessage = function (evt) { // formatters loop
-        for (var i=0;i<protos.length;i++) { p = protos[i]; if (p.on(evt, p.do).status == "ok") return; } };
+        for (var i=0;i<protos.length;i++) { p = protos[i]; if (p.on(evt).status == "ok") return; } };
     ws.onopen = function() { if (!active) { console.log('Connect'); ws.send('N2O,'+transition.pid); active=true; } };
-    ws.onclose = function() { active = false; console.log('Disconnect'); }; 
-    next(); 
+    ws.onclose = function() { active = false; console.log('Disconnect'); };
+    next();
 }
 
 function qi(name) { return document.getElementById(name); }
@@ -36,19 +36,25 @@ var $file = {}; $file.on = function onfile(r, cb) { if (is(r,10,'ftp')) {
 var $bin = {}; $bin.on = function onbin(r, cb) { if (is(r,2,'bin')) {
     if (typeof cb == 'function') cb(r); return { status: "ok" }; } else return { status: '' }; }
 
+// BERT sync read message to keep order
+
+var sync_worker_blob = new Blob(["onmessage = function(e) { var r = new FileReaderSync(), res = r.readAsArrayBuffer(e.data); postMessage(res, [res]); }"]),
+    sync_worker = new Worker(window.URL.createObjectURL(sync_worker_blob));
+
+sync_worker.onmessage = function(e) {
+    try { erlang = dec(e.data);
+        if (debug) console.log(JSON.stringify(erlang));
+        for (var i=0;i<$bert.protos.length;i++) {
+            p = $bert.protos[i]; if (p.on(erlang, p.do).status == "ok") return; }
+    } catch (error) { console.log(error); }
+};
+
 // BERT Formatter
 
-var $bert = {}; $bert.protos = [$io,$bin,$file]; $bert.on = function onbert(evt, cb) {
+var $bert = {}; $bert.protos = [$io,$bin,$file]; $bert.on = function onbert(evt) {
     if (Blob.prototype.isPrototypeOf(evt.data) && (evt.data.length > 0 || evt.data.size > 0)) {
-        var r = new FileReader();
-        r.addEventListener("loadend", function() {
-            try { erlang = dec(r.result);
-                  if (debug) console.log(JSON.stringify(erlang));
-                  if (typeof cb  == 'function') cb(erlang);
-                  for (var i=0;i<$bert.protos.length;i++) {
-                    p = $bert.protos[i]; if (p.on(erlang, p.do).status == "ok") return; }
-            } catch (e) { console.log(e); } });
-        r.readAsArrayBuffer(evt.data);
-        return { status: "ok" }; } else return { status: "error", desc: "data" }; }
+        sync_worker.postMessage(evt.data);
+        return { status: "ok" }; } else return { status: "error", desc: "data" };
+    }
 
-var  protos = [ $bert ];
+var protos = [ $bert ];
